@@ -26,6 +26,7 @@ except ImportError:
     NETWORKX_AVAILABLE = False
     print("⚠️  NetworkX not available. Install with: pip install networkx")
 
+from datetime import datetime
 from chainlex_api import ChainLex
 
 
@@ -329,6 +330,134 @@ class EnhancedHypergraphAPI:
             print(f"Error analyzing centrality: {e}")
             return []
     
+    def find_financial_communication_paths(self, entity_id: str) -> List[Dict[str, Any]]:
+        """
+        Find paths between financial and communication evidence for an entity.
+
+        Locates all financial_record and communication_record nodes associated
+        with the given entity and returns the shortest paths connecting them,
+        enabling discovery of financial-communication correlations.
+
+        Args:
+            entity_id: The entity identifier to search for
+
+        Returns:
+            List of dicts, each with 'financial_node', 'communication_node',
+            'path' (list of node names), and 'confidence'.
+        """
+        if not self.is_available():
+            return []
+
+        # Collect financial and communication nodes linked to the entity
+        financial_nodes = []
+        communication_nodes = []
+
+        for node_id, data in self.graph.nodes(data=True):
+            node_type = data.get('node_type', '')
+            # Match nodes that reference the entity (via entity_ref or entity_id attribute)
+            linked_entity = data.get('entity_ref', data.get('entity_id', ''))
+            if linked_entity != entity_id:
+                continue
+            if node_type == 'financial_record':
+                financial_nodes.append(node_id)
+            elif node_type == 'communication_record':
+                communication_nodes.append(node_id)
+
+        # Find shortest paths between each financial-communication pair
+        results = []
+        for fin_id in financial_nodes:
+            for comm_id in communication_nodes:
+                try:
+                    path = nx.shortest_path(self.graph, fin_id, comm_id)
+                    node_names = [
+                        self.graph.nodes[nid].get('name', nid) for nid in path
+                    ]
+                    confidence = self.compute_path_confidence(node_names)
+                    results.append({
+                        'financial_node': self.graph.nodes[fin_id].get('name', fin_id),
+                        'communication_node': self.graph.nodes[comm_id].get('name', comm_id),
+                        'path': node_names,
+                        'confidence': confidence
+                    })
+                except nx.NetworkXNoPath:
+                    continue
+
+        # Sort by confidence descending
+        results.sort(key=lambda x: x['confidence'], reverse=True)
+        return results
+
+    def get_temporal_correlations(self, start_date: str, end_date: str) -> List[Dict[str, Any]]:
+        """
+        Query nodes within a date range and return temporal correlations.
+
+        Finds all nodes whose 'created_at' or 'timestamp' falls within
+        [start_date, end_date] and groups them by type, enabling discovery
+        of temporal proximity between financial and communication records.
+
+        Args:
+            start_date: ISO-format start date (e.g. '2025-01-01')
+            end_date:   ISO-format end date   (e.g. '2025-12-31')
+
+        Returns:
+            List of dicts with 'node_name', 'node_type', 'timestamp', and any
+            'temporal_proximity_edges' linking to other nodes in the range.
+        """
+        if not self.is_available():
+            return []
+
+        try:
+            dt_start = datetime.fromisoformat(start_date)
+            dt_end = datetime.fromisoformat(end_date)
+        except ValueError:
+            return []
+
+        # Collect nodes within the date range
+        in_range_ids: Set[str] = set()
+        in_range_nodes: List[Dict[str, Any]] = []
+
+        for node_id, data in self.graph.nodes(data=True):
+            ts_raw = data.get('timestamp', data.get('created_at'))
+            if ts_raw is None:
+                continue
+            try:
+                if isinstance(ts_raw, str):
+                    ts = datetime.fromisoformat(ts_raw)
+                elif isinstance(ts_raw, (int, float)):
+                    ts = datetime.fromtimestamp(ts_raw)
+                else:
+                    continue
+            except (ValueError, OSError):
+                continue
+
+            if dt_start <= ts <= dt_end:
+                in_range_ids.add(node_id)
+                in_range_nodes.append({
+                    'node_id': node_id,
+                    'node_name': data.get('name', node_id),
+                    'node_type': data.get('node_type', 'unknown'),
+                    'timestamp': ts.isoformat(),
+                    'temporal_proximity_edges': []
+                })
+
+        # For each in-range node, find temporal_proximity edges to other in-range nodes
+        node_lookup = {n['node_id']: n for n in in_range_nodes}
+        for node_id in in_range_ids:
+            for neighbor_id in self.graph.successors(node_id):
+                if neighbor_id not in in_range_ids:
+                    continue
+                edge_data = self.graph[node_id][neighbor_id]
+                if edge_data.get('edge_type') == 'temporal_proximity':
+                    node_lookup[node_id]['temporal_proximity_edges'].append({
+                        'target': self.graph.nodes[neighbor_id].get('name', neighbor_id),
+                        'strength': edge_data.get('strength', 0.0)
+                    })
+
+        # Remove internal node_id before returning
+        for entry in in_range_nodes:
+            del entry['node_id']
+
+        return in_range_nodes
+
     def get_domain_statistics(self, domain: str) -> Dict[str, Any]:
         """
         Get comprehensive statistics for a domain
