@@ -13,7 +13,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS scmlex_nodes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     node_id TEXT UNIQUE NOT NULL,
-    node_type TEXT NOT NULL CHECK (node_type IN ('principle', 'rule', 'concept', 'domain')),
+    -- Node types: principle, rule, concept, domain (original)
+    --             financial_record, communication_record (financial-communication integration)
+    node_type TEXT NOT NULL CHECK (node_type IN ('principle', 'rule', 'concept', 'domain',
+                                                  'financial_record', 'communication_record')),
     level INTEGER,
     name TEXT NOT NULL,
     description TEXT,
@@ -58,7 +61,10 @@ CREATE INDEX IF NOT EXISTS idx_nodes_search ON scmlex_nodes
 CREATE TABLE IF NOT EXISTS scmlex_edges (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     edge_id TEXT UNIQUE,
-    edge_type TEXT NOT NULL CHECK (edge_type IN ('relationship', 'derivation', 'domain_membership')),
+    -- Edge types: relationship, derivation, domain_membership (original)
+    --             financial_communication_correlation, temporal_proximity (financial-communication integration)
+    edge_type TEXT NOT NULL CHECK (edge_type IN ('relationship', 'derivation', 'domain_membership',
+                                                  'financial_communication_correlation', 'temporal_proximity')),
     source_node_id TEXT NOT NULL REFERENCES scmlex_nodes(node_id),
     target_node_id TEXT NOT NULL REFERENCES scmlex_nodes(node_id),
     
@@ -231,14 +237,18 @@ $$ LANGUAGE plpgsql;
 -- ============================================================================
 
 CREATE OR REPLACE VIEW v_hypergraph_statistics AS
-SELECT 
+SELECT
     (SELECT COUNT(*) FROM scmlex_nodes) as total_nodes,
     (SELECT COUNT(*) FROM scmlex_nodes WHERE node_type = 'principle') as principle_count,
     (SELECT COUNT(*) FROM scmlex_nodes WHERE node_type = 'rule') as rule_count,
     (SELECT COUNT(*) FROM scmlex_nodes WHERE node_type = 'domain') as domain_count,
+    (SELECT COUNT(*) FROM scmlex_nodes WHERE node_type = 'financial_record') as financial_record_count,
+    (SELECT COUNT(*) FROM scmlex_nodes WHERE node_type = 'communication_record') as communication_record_count,
     (SELECT COUNT(*) FROM scmlex_edges) as total_edges,
     (SELECT COUNT(*) FROM scmlex_edges WHERE edge_type = 'derivation') as derivation_count,
     (SELECT COUNT(*) FROM scmlex_edges WHERE edge_type = 'relationship') as relationship_count,
+    (SELECT COUNT(*) FROM scmlex_edges WHERE edge_type = 'financial_communication_correlation') as financial_communication_correlation_count,
+    (SELECT COUNT(*) FROM scmlex_edges WHERE edge_type = 'temporal_proximity') as temporal_proximity_count,
     (SELECT COUNT(*) FROM scmlex_hyperedges) as hyperedge_count;
 
 -- ============================================================================
