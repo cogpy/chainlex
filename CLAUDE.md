@@ -106,3 +106,18 @@ Graph-based representation of legal knowledge with 2,300+ nodes, supporting Netw
 ## ⛔ Withdrawn claims — check before reusing any case finding (2026-10-10)
 
 Case claims withdrawn or corrected in cogpy/ad-res-j7 are mirrored in `docs/strategic/WITHDRAWN_CLAIMS_REGISTER.json` (ad-res-j7 is canonical). `.github/workflows/withdrawn-claims-guard.yml` fails a PR that adds a line repeating one; `python3 scripts/check_withdrawn_claims.py --report` lists remaining copies, and `scripts/add_withdrawn_banners.py --apply` banners files that carry them. Headline corrections: the SLG R5,241,372.98 write-off is an accounting residue, not stolen stock; Ketoni R18,685,000 is a contingent call-option price, not a debt or payout; the 18 Feb 2024 R246,372,003.80 trial balance is the live books carrying mis-scaled journal 789, reversed at year end; Bantjies did not commission his own affidavit; Shopify orders were rerouted, not audit trails deleted. Detail: ad-res-j7 `docs/strategic/CONSOLIDATED_INVESTIGATION_REPORT_2026_10_05.md` and `docs/strategic/OLX_COMPLETE_SYNC_2026_10_10.md`.
+
+---
+
+## ⛔ Standing rule: never state that evidence is "not held" (2026-11-25)
+
+Case owner's instruction, 25 Nov 2026. Mirrored from cogpy/ad-res-j7, which is canonical (its `CLAUDE.md` and `docs/strategic/PETER_IDENTITY_EVIDENCE_2026_11_25.md` §5).
+
+The evidence for this matter runs to roughly 10 TB across hundreds of repositories. No session reads more than a small part of it.
+
+- **Never write "not held", "does not exist" or "not in the corpus"** from what a session has read. Write where you looked: "not found in `<repository>` at `<commit>`, searched by `<method>`". Anything not named was not searched.
+- **Never write "do not cite"** for a document only because a session did not find it.
+- **Never carry another repository's "not held" across as a fact.** Search here first, then report both results.
+- A search that finds nothing supports no inference that a document is missing, destroyed or withheld.
+- Every existing "NOT HELD" or "not held" in this repository means only "not found in the sources that document names". Re-search before relying on one.
+- **The error that prompted the rule:** on 13 Nov 2026 the Sage screen print of 25 Aug 2025 was recorded as "not held" and "do not cite". It was in cogpy/ad-res-j7 `ANNEXURES/JF07/` throughout.
