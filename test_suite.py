@@ -10,6 +10,10 @@ Tests all optimization tools for optimal grip on legal frameworks:
 - Enhanced hypergraph integration
 """
 
+import json
+import re
+import shutil
+import subprocess
 import unittest
 import sys
 from pathlib import Path
@@ -260,6 +264,104 @@ class TestIntegration(unittest.TestCase):
         )
 
 
+class TestShippedArtifactParity(unittest.TestCase):
+    """Shipped index and hypergraph snapshots must match the Scheme sources"""
+
+    D1_REMOVED = {'benefit-to-accused?', 'actual-benefit-received?', 'potential-benefit?'}
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixtures"""
+        base = Path(__file__).parent
+        cls.live = {
+            code: {f['name'] for f in fw['functions']}
+            for code, fw in FrameworkIndex().frameworks.items()
+        }
+        with open(base / 'framework_index.json', encoding='utf-8') as f:
+            cls.shipped_index = json.load(f)
+        with open(base / 'hypergraph' / 'tuples.json', encoding='utf-8') as f:
+            tuples = json.load(f)
+        cls.shipped_criminal_rules = {
+            r['name'] for r in tuples['nodes']['rules']
+            if r.get('legal_domain') == 'criminal'
+        }
+        cls.pickle_file = base / 'hypergraph' / 'scmlex_hypergraph.pkl'
+
+    def test_framework_index_matches_sources(self):
+        """framework_index.json lists the same functions as the Scheme files"""
+        for code, names in self.live.items():
+            shipped = {f['name'] for f in self.shipped_index['frameworks'][code]['functions']}
+            self.assertEqual(names, shipped, f"framework_index.json is stale for '{code}'")
+
+    def test_tuples_contain_criminal_rules(self):
+        """hypergraph/tuples.json covers every criminal-law rule"""
+        # extract_tuples.py only recognises names matching [a-z\-\?]+
+        extractable = {n for n in self.live['cri'] if re.fullmatch(r'[a-z\-\?]+', n)}
+        missing = extractable - self.shipped_criminal_rules
+        self.assertFalse(missing, f"tuples.json missing criminal rules: {sorted(missing)}")
+        stale = self.D1_REMOVED & self.shipped_criminal_rules
+        self.assertFalse(stale, f"tuples.json still has removed rules: {sorted(stale)}")
+
+    def test_hypergraph_pickle_matches_tuples(self):
+        """scmlex_hypergraph.pkl carries the same criminal-law rules as tuples.json"""
+        try:
+            import networkx  # noqa: F401
+        except ImportError:
+            self.skipTest("networkx not installed")
+        import pickle
+        with open(self.pickle_file, 'rb') as f:
+            graph = pickle.load(f)['graph']
+        rules = {
+            d.get('name') for _, d in graph.nodes(data=True)
+            if d.get('node_type') == 'rule' and d.get('legal_domain') == 'criminal'
+        }
+        self.assertEqual(rules, self.shipped_criminal_rules)
+
+
+FRAUD_THEFT_TRUTH_TABLE = r"""
+(define (has-attribute act attr) (and (assq attr act) #t))
+(define (get-attribute act attr . d)
+  (let ((p (assq attr act))) (if p (cdr p) (if (null? d) #f (car d)))))
+(primitive-load "cri/za/south_african_criminal_law.scm")
+(define (flag name) (lambda (act) (has-attribute act name)))
+(set! unlawful-act? (flag 'unlawful))
+(set! misrepresentation? (flag 'misrep))
+(set! actual-loss-suffered? (flag 'loss))
+(set! potential-prejudice? (flag 'potential))
+(set! causation? (flag 'causation))
+(set! intention-to-defraud? (flag 'intent))
+(set! appropriation? (flag 'appropriation))
+(set! movable-property? (flag 'movable))
+(set! belonging-to-another? (flag 'another))
+(set! intention-to-permanently-deprive? (flag 'deprive))
+(set! no-claim-of-right? (flag 'no-claim))
+(define (row . attrs) (map (lambda (a) (cons a #t)) attrs))
+(define (show x) (display (if x "1" "0")))
+(show (fraud? (row 'unlawful 'misrep 'potential 'intent)))
+(show (fraud? (row 'unlawful 'misrep 'loss 'causation 'intent)))
+(show (fraud? (row 'unlawful 'misrep 'loss 'intent)))
+(show (fraud? (row 'misrep 'potential 'intent)))
+(show (fraud? (row 'unlawful 'misrep 'potential)))
+(show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive 'no-claim)))
+(show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive)))
+"""
+
+
+@unittest.skipUnless(shutil.which('guile'), "guile not installed")
+class TestCriminalRuleSemantics(unittest.TestCase):
+    """fraud? and theft? element logic after the Defect D1 repair"""
+
+    def test_fraud_and_theft_truth_table(self):
+        result = subprocess.run(
+            ['guile', '--no-auto-compile', '-c', FRAUD_THEFT_TRUTH_TABLE],
+            cwd=Path(__file__).parent, capture_output=True, text=True, timeout=60,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        # fraud: potential prejudice; actual loss + causation; actual loss without
+        # causation; not unlawful; no intent. theft: no claim of right; claim of right.
+        self.assertEqual(result.stdout.strip(), '1100010')
+
+
 def run_tests():
     """Run all tests and generate report"""
     print("\n" + "="*70)
@@ -276,6 +378,8 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestDomainHelpers))
     suite.addTests(loader.loadTestsFromTestCase(TestFrameworkValidator))
     suite.addTests(loader.loadTestsFromTestCase(TestIntegration))
+    suite.addTests(loader.loadTestsFromTestCase(TestShippedArtifactParity))
+    suite.addTests(loader.loadTestsFromTestCase(TestCriminalRuleSemantics))
     
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)

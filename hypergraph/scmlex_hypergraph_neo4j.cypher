@@ -676,6 +676,8 @@ CREATE (:Rule {id: '0dc24153-759b-480d-9fa9-ce19049a9f6e', name: 'under-irresist
 CREATE (:Rule {id: 'f8c1507c-13ea-405c-bb3c-2d24d5534aab', name: 'unconscious-state?', description: 'Rule: unconscious-state?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '291e0b5e-02f7-4de9-b237-7da6e41df20c', name: 'unlawful-act?', description: 'Rule: unlawful-act?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '4bb7e8e9-7a85-4353-a641-96c0fa931130', name: 'lawful-justification?', description: 'Rule: lawful-justification?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: '491ac4ae-493e-44de-bcd7-71ad702aa1c5', name: 'self-defence?', description: 'Rule: self-defence?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: 'b4ad2289-bcf5-43d1-8b2c-1060df9fcb20', name: 'legal-authority?', description: 'Rule: legal-authority?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'f9d72d1a-bf2a-4d4a-81ad-fb2a37b98003', name: 'consent-defence?', description: 'Rule: consent-defence?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '99473013-b7e1-4f58-ad7d-97304fcc9fe0', name: 'statutory-authority?', description: 'Rule: statutory-authority?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'df465e0f-66a5-4369-839c-74a8a5ce0e27', name: 'violates-legal-norm?', description: 'Rule: violates-legal-norm?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
@@ -739,6 +741,8 @@ CREATE (:Rule {id: '58344106-f327-4e83-9a1b-24bd54215153', name: 'intention-to-p
 CREATE (:Rule {id: '7c6410ef-a4aa-4a12-a9d1-d01ccfd20618', name: 'intention-to-keep-permanently?', description: 'Rule: intention-to-keep-permanently?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '3f96d8ed-45c7-4e91-8b23-582d232e174f', name: 'intention-to-dispose?', description: 'Rule: intention-to-dispose?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'fabac3f9-01ed-427d-a6f8-3fe10c13df0a', name: 'treats-property-as-own?', description: 'Rule: treats-property-as-own?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: '562e02ca-80d8-4037-995d-c5a9471b8984', name: 'claim-of-right?', description: 'Rule: claim-of-right?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: '52295ad1-e398-4b2b-9f6a-1f99d0699af4', name: 'no-claim-of-right?', description: 'Rule: no-claim-of-right?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '07682fb1-d6bd-4168-a770-56213be0ffd6', name: 'violence-or-threat?', description: 'Rule: violence-or-threat?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '01a7b0d2-25a1-413a-87a7-68b36684f328', name: 'actual-violence-used?', description: 'Rule: actual-violence-used?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '32d42a2a-83c8-4425-a705-4d5b4278c431', name: 'threat-of-violence?', description: 'Rule: threat-of-violence?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
@@ -750,12 +754,11 @@ CREATE (:Rule {id: '81d68c61-dea2-4cae-8420-9e06b28f843e', name: 'induced-relian
 CREATE (:Rule {id: 'a42195f3-af6f-4ecf-aa62-68444cd8a858', name: 'prejudice-to-another?', description: 'Rule: prejudice-to-another?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '8a223feb-17a8-462b-a15d-d2f32a667de6', name: 'actual-loss-suffered?', description: 'Rule: actual-loss-suffered?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'a10b0408-1cf3-48ae-8c88-2f08045dc1f5', name: 'potential-prejudice?', description: 'Rule: potential-prejudice?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
-CREATE (:Rule {id: '056389db-278d-43e1-815c-b431307d9848', name: 'benefit-to-accused?', description: 'Rule: benefit-to-accused?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
-CREATE (:Rule {id: 'ff0b5d0e-22fd-4c7b-bc71-2141398d6536', name: 'actual-benefit-received?', description: 'Rule: actual-benefit-received?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
-CREATE (:Rule {id: '7cd0a453-d8e9-434f-a524-8972829e27d9', name: 'potential-benefit?', description: 'Rule: potential-benefit?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '15dd2dce-d1ac-4dd4-a08c-b16591d1bbbe', name: 'intention-to-deceive?', description: 'Rule: intention-to-deceive?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'ff88b2c2-97d5-4ca2-b671-f6eeb74926d4', name: 'knowledge-of-falsity?', description: 'Rule: knowledge-of-falsity?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'e44be79d-cf5c-4ae7-bbe2-f593b3b5f0c5', name: 'intention-to-mislead?', description: 'Rule: intention-to-mislead?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: 'eb3678fe-67bd-4a5f-bf57-06d94613cf4b', name: 'intention-to-defraud?', description: 'Rule: intention-to-defraud?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
+CREATE (:Rule {id: 'daca8a60-c6c5-42fe-a504-84c422c8290d', name: 'intention-to-induce-prejudicial-action?', description: 'Rule: intention-to-induce-prejudicial-action?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'cc677791-e704-400f-a06c-7a681a355a6e', name: 'breaking?', description: 'Rule: breaking?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: '02712b8f-5c12-4454-b603-3eabdd871a31', name: 'physical-breaking?', description: 'Rule: physical-breaking?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});
 CREATE (:Rule {id: 'ad99ae11-968a-46a3-a4b9-13274c7a5ed4', name: 'constructive-breaking?', description: 'Rule: constructive-breaking?', level: 2, jurisdiction: 'ZA', legal_domain: 'criminal', confidence: 0.95});

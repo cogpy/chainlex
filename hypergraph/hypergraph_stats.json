@@ -1,10 +1,10 @@
 {
-  "total_nodes": 2306,
+  "total_nodes": 2309,
   "total_edges": 80,
   "total_hyperedges": 20,
   "node_types": {
     "principle": 63,
-    "rule": 2215,
+    "rule": 2218,
     "domain": 28
   },
   "edge_types": {
@@ -13,14 +13,14 @@
   },
   "levels": {
     "1": 63,
-    "2": 2215
+    "2": 2218
   },
   "top_domains": {
     "civil": 358,
     "international": 358,
     "construction": 348,
     "labour": 341,
-    "criminal": 336,
+    "criminal": 339,
     "environmental": 300,
     "administrative": 221,
     "constitutional": 11,

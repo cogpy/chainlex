@@ -7360,6 +7360,28 @@
       "inference_type": "deductive"
     },
     {
+      "id": "491ac4ae-493e-44de-bcd7-71ad702aa1c5",
+      "node_type": "rule",
+      "level": 2,
+      "name": "self-defence?",
+      "description": "Rule: self-defence?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
+      "id": "b4ad2289-bcf5-43d1-8b2c-1060df9fcb20",
+      "node_type": "rule",
+      "level": 2,
+      "name": "legal-authority?",
+      "description": "Rule: legal-authority?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
       "id": "f9d72d1a-bf2a-4d4a-81ad-fb2a37b98003",
       "node_type": "rule",
       "level": 2,
@@ -8053,6 +8075,28 @@
       "inference_type": "deductive"
     },
     {
+      "id": "562e02ca-80d8-4037-995d-c5a9471b8984",
+      "node_type": "rule",
+      "level": 2,
+      "name": "claim-of-right?",
+      "description": "Rule: claim-of-right?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
+      "id": "52295ad1-e398-4b2b-9f6a-1f99d0699af4",
+      "node_type": "rule",
+      "level": 2,
+      "name": "no-claim-of-right?",
+      "description": "Rule: no-claim-of-right?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
       "id": "07682fb1-d6bd-4168-a770-56213be0ffd6",
       "node_type": "rule",
       "level": 2,
@@ -8174,39 +8218,6 @@
       "inference_type": "deductive"
     },
     {
-      "id": "056389db-278d-43e1-815c-b431307d9848",
-      "node_type": "rule",
-      "level": 2,
-      "name": "benefit-to-accused?",
-      "description": "Rule: benefit-to-accused?",
-      "jurisdiction": "ZA",
-      "legal_domain": "criminal",
-      "confidence": 0.95,
-      "inference_type": "deductive"
-    },
-    {
-      "id": "ff0b5d0e-22fd-4c7b-bc71-2141398d6536",
-      "node_type": "rule",
-      "level": 2,
-      "name": "actual-benefit-received?",
-      "description": "Rule: actual-benefit-received?",
-      "jurisdiction": "ZA",
-      "legal_domain": "criminal",
-      "confidence": 0.95,
-      "inference_type": "deductive"
-    },
-    {
-      "id": "7cd0a453-d8e9-434f-a524-8972829e27d9",
-      "node_type": "rule",
-      "level": 2,
-      "name": "potential-benefit?",
-      "description": "Rule: potential-benefit?",
-      "jurisdiction": "ZA",
-      "legal_domain": "criminal",
-      "confidence": 0.95,
-      "inference_type": "deductive"
-    },
-    {
       "id": "15dd2dce-d1ac-4dd4-a08c-b16591d1bbbe",
       "node_type": "rule",
       "level": 2,
@@ -8234,6 +8245,28 @@
       "level": 2,
       "name": "intention-to-mislead?",
       "description": "Rule: intention-to-mislead?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
+      "id": "eb3678fe-67bd-4a5f-bf57-06d94613cf4b",
+      "node_type": "rule",
+      "level": 2,
+      "name": "intention-to-defraud?",
+      "description": "Rule: intention-to-defraud?",
+      "jurisdiction": "ZA",
+      "legal_domain": "criminal",
+      "confidence": 0.95,
+      "inference_type": "deductive"
+    },
+    {
+      "id": "daca8a60-c6c5-42fe-a504-84c422c8290d",
+      "node_type": "rule",
+      "level": 2,
+      "name": "intention-to-induce-prejudicial-action?",
+      "description": "Rule: intention-to-induce-prejudicial-action?",
       "jurisdiction": "ZA",
       "legal_domain": "criminal",
       "confidence": 0.95,
