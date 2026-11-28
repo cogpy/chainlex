@@ -7247,6 +7247,20 @@
           "file": "south_african_criminal_law.scm"
         },
         {
+          "name": "self-defence?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
+          "name": "legal-authority?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
           "name": "consent-defence?",
           "docstring": "",
           "cross_references": [],
@@ -7688,6 +7702,20 @@
           "file": "south_african_criminal_law.scm"
         },
         {
+          "name": "claim-of-right?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
+          "name": "no-claim-of-right?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
           "name": "violence-or-threat?",
           "docstring": "",
           "cross_references": [],
@@ -7765,27 +7793,6 @@
           "file": "south_african_criminal_law.scm"
         },
         {
-          "name": "benefit-to-accused?",
-          "docstring": "",
-          "cross_references": [],
-          "is_principle": false,
-          "file": "south_african_criminal_law.scm"
-        },
-        {
-          "name": "actual-benefit-received?",
-          "docstring": "",
-          "cross_references": [],
-          "is_principle": false,
-          "file": "south_african_criminal_law.scm"
-        },
-        {
-          "name": "potential-benefit?",
-          "docstring": "",
-          "cross_references": [],
-          "is_principle": false,
-          "file": "south_african_criminal_law.scm"
-        },
-        {
           "name": "intention-to-deceive?",
           "docstring": "",
           "cross_references": [],
@@ -7801,6 +7808,20 @@
         },
         {
           "name": "intention-to-mislead?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
+          "name": "intention-to-defraud?",
+          "docstring": "",
+          "cross_references": [],
+          "is_principle": false,
+          "file": "south_african_criminal_law.scm"
+        },
+        {
+          "name": "intention-to-induce-prejudicial-action?",
           "docstring": "",
           "cross_references": [],
           "is_principle": false,
@@ -9123,7 +9144,7 @@
           "file": "south_african_criminal_law.scm"
         }
       ],
-      "function_count": 326
+      "function_count": 329
     },
     "con": {
       "code": "con",
@@ -18839,7 +18860,7 @@
           "file": "south_african_international_law.scm"
         },
         {
-          "name": "agr\u00e9ment-granted?",
+          "name": "agrément-granted?",
           "docstring": "",
           "cross_references": [],
           "is_principle": false,
@@ -28503,6 +28524,24 @@
       "is_principle": false,
       "file": "south_african_criminal_law.scm"
     },
+    "cri:self-defence?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "self-defence?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
+    "cri:legal-authority?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "legal-authority?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
     "cri:consent-defence?": {
       "framework": "cri",
       "framework_name": "Criminal Law (ZA)",
@@ -29070,6 +29109,24 @@
       "is_principle": false,
       "file": "south_african_criminal_law.scm"
     },
+    "cri:claim-of-right?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "claim-of-right?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
+    "cri:no-claim-of-right?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "no-claim-of-right?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
     "cri:violence-or-threat?": {
       "framework": "cri",
       "framework_name": "Criminal Law (ZA)",
@@ -29169,33 +29226,6 @@
       "is_principle": false,
       "file": "south_african_criminal_law.scm"
     },
-    "cri:benefit-to-accused?": {
-      "framework": "cri",
-      "framework_name": "Criminal Law (ZA)",
-      "name": "benefit-to-accused?",
-      "docstring": "",
-      "cross_references": [],
-      "is_principle": false,
-      "file": "south_african_criminal_law.scm"
-    },
-    "cri:actual-benefit-received?": {
-      "framework": "cri",
-      "framework_name": "Criminal Law (ZA)",
-      "name": "actual-benefit-received?",
-      "docstring": "",
-      "cross_references": [],
-      "is_principle": false,
-      "file": "south_african_criminal_law.scm"
-    },
-    "cri:potential-benefit?": {
-      "framework": "cri",
-      "framework_name": "Criminal Law (ZA)",
-      "name": "potential-benefit?",
-      "docstring": "",
-      "cross_references": [],
-      "is_principle": false,
-      "file": "south_african_criminal_law.scm"
-    },
     "cri:intention-to-deceive?": {
       "framework": "cri",
       "framework_name": "Criminal Law (ZA)",
@@ -29218,6 +29248,24 @@
       "framework": "cri",
       "framework_name": "Criminal Law (ZA)",
       "name": "intention-to-mislead?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
+    "cri:intention-to-defraud?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "intention-to-defraud?",
+      "docstring": "",
+      "cross_references": [],
+      "is_principle": false,
+      "file": "south_african_criminal_law.scm"
+    },
+    "cri:intention-to-induce-prejudicial-action?": {
+      "framework": "cri",
+      "framework_name": "Criminal Law (ZA)",
+      "name": "intention-to-induce-prejudicial-action?",
       "docstring": "",
       "cross_references": [],
       "is_principle": false,
@@ -43254,10 +43302,10 @@
       "is_principle": false,
       "file": "south_african_international_law.scm"
     },
-    "int:agr\u00e9ment-granted?": {
+    "int:agrément-granted?": {
       "framework": "int",
       "framework_name": "International Law (ZA)",
-      "name": "agr\u00e9ment-granted?",
+      "name": "agrément-granted?",
       "docstring": "",
       "cross_references": [],
       "is_principle": false,
@@ -51185,6 +51233,8 @@
       "cri:unconscious-state?",
       "cri:unlawful-act?",
       "cri:lawful-justification?",
+      "cri:self-defence?",
+      "cri:legal-authority?",
       "cri:consent-defence?",
       "cri:statutory-authority?",
       "cri:violates-legal-norm?",
@@ -51248,6 +51298,8 @@
       "cri:intention-to-keep-permanently?",
       "cri:intention-to-dispose?",
       "cri:treats-property-as-own?",
+      "cri:claim-of-right?",
+      "cri:no-claim-of-right?",
       "cri:violence-or-threat?",
       "cri:actual-violence-used?",
       "cri:threat-of-violence?",
@@ -51259,12 +51311,11 @@
       "cri:prejudice-to-another?",
       "cri:actual-loss-suffered?",
       "cri:potential-prejudice?",
-      "cri:benefit-to-accused?",
-      "cri:actual-benefit-received?",
-      "cri:potential-benefit?",
       "cri:intention-to-deceive?",
       "cri:knowledge-of-falsity?",
       "cri:intention-to-mislead?",
+      "cri:intention-to-defraud?",
+      "cri:intention-to-induce-prejudicial-action?",
       "cri:breaking?",
       "cri:physical-breaking?",
       "cri:constructive-breaking?",
@@ -53208,7 +53259,7 @@
       "int:diplomatic-agent?",
       "int:accredited-to-receiving-state?",
       "int:credentials-presented?",
-      "int:agr\u00e9ment-granted?",
+      "int:agrément-granted?",
       "int:immunity-from-jurisdiction?",
       "int:criminal-immunity?",
       "int:absolute-immunity?",
@@ -54749,7 +54800,7 @@
   },
   "stats": {
     "total_frameworks": 9,
-    "total_functions": 2638,
+    "total_functions": 2641,
     "total_principles": 394,
     "frameworks": {
       "lv1": {
@@ -54772,7 +54823,7 @@
       "cri": {
         "name": "Criminal Law (ZA)",
         "level": 2,
-        "function_count": 326,
+        "function_count": 329,
         "domains": [
           "criminal"
         ]
@@ -54845,7 +54896,7 @@
         "principles": 8
       },
       "criminal": {
-        "function_count": 326,
+        "function_count": 329,
         "principles": 0
       },
       "constitutional": {

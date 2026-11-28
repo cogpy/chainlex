@@ -61,21 +61,32 @@
        (intention? act))))
 
 ;; Property Crimes
+;; Theft (common law — unlawful and intentional appropriation of movable
+;; property belonging to another, without claim of right; T1-T4)
 (define theft? (lambda (act)
-  (and (appropriation? act)
+  (and (unlawful-act? act)
+       (appropriation? act)
        (movable-property? act)
        (belonging-to-another? act)
-       (intention-to-permanently-deprive? act))))
+       (intention-to-permanently-deprive? act)
+       (no-claim-of-right? act))))
 
 (define robbery? (lambda (act)
   (and (theft? act)
        (violence-or-threat? act))))
 
+;; Fraud (common law — Gardener v The State [2011] ZASCA 24 paras 29-34;
+;; Mngqibisa v The State [2007] ZASCA 119 paras 7-9, 12; F1-F5).
+;; Defect D1 repaired: benefit to the accused is not an element of SA fraud.
+;; Actual or potential prejudice suffices; causation is required where actual
+;; prejudice is relied on and not required where potential prejudice suffices.
 (define fraud? (lambda (act)
-  (and (misrepresentation? act)
+  (and (unlawful-act? act)
+       (misrepresentation? act)
        (prejudice-to-another? act)
-       (benefit-to-accused? act)
-       (intention-to-deceive? act))))
+       (or (potential-prejudice? act)
+           (causation? act))
+       (intention-to-defraud? act))))
 
 (define housebreaking? (lambda (act)
   (and (breaking? act)
@@ -315,6 +326,10 @@
       (necessity? act)
       (legal-authority? act))))
 
+(define self-defence? (lambda (act) (private-defence? act)))
+
+(define legal-authority? (lambda (act) (statutory-authority? act)))
+
 (define consent-defence? (lambda (act)
   (and (has-attribute act 'victim-consent)
        (valid-consent? act))))
@@ -423,7 +438,7 @@
 (define self-defence-killing? (lambda (act)
   (and (unlawful-attack? act)
        (defence-necessary? act)
-       (proportionate-force? act)))
+       (proportionate-force? act))))
 
 (define intention-to-kill? (lambda (act)
   (or (dolus-directus-kill? act)
@@ -485,7 +500,7 @@
 (define consent-invalid? (lambda (act)
   (or (has-attribute act 'consent-by-force)
       (has-attribute act 'consent-by-fraud)
-      (has-attribute act 'consent-by-threat)))
+      (has-attribute act 'consent-by-threat))))
 
 (define complainant-incapable-consent? (lambda (act)
   (or (complainant-under-age? act)
@@ -493,7 +508,7 @@
       (complainant-mentally-incapacitated? act))))
 
 (define complainant-under-age? (lambda (act)
-  (< (get-attribute act 'complainant-age) 16))
+  (< (get-attribute act 'complainant-age) 16)))
 
 (define complainant-unconscious? (lambda (act)
   (has-attribute act 'complainant-unconscious)))
@@ -554,6 +569,12 @@
 (define treats-property-as-own? (lambda (act)
   (has-attribute act 'ownership-assumption)))
 
+(define claim-of-right? (lambda (act)
+  (has-attribute act 'bona-fide-claim-of-right)))
+
+(define no-claim-of-right? (lambda (act)
+  (not (claim-of-right? act))))
+
 ;; Robbery
 (define violence-or-threat? (lambda (act)
   (or (actual-violence-used? act)
@@ -565,12 +586,11 @@
 (define threat-of-violence? (lambda (act)
   (has-attribute act 'violent-threat)))
 
-;; Fraud
+;; Fraud (F1-F5 helpers — Defect D1 repaired per Gardener [2011] ZASCA 24)
 (define misrepresentation? (lambda (act)
   (and (false-statement? act)
        (or (statement-of-fact? act)
-           (concealment-of-truth? act))
-       (induced-reliance? act))))
+           (concealment-of-truth? act)))))
 
 (define false-statement? (lambda (act)
   (has-attribute act 'false-representation)))
@@ -594,15 +614,8 @@
 (define potential-prejudice? (lambda (act)
   (has-attribute act 'risk-of-loss)))
 
-(define benefit-to-accused? (lambda (act)
-  (or (actual-benefit-received? act)
-      (potential-benefit? act))))
-
-(define actual-benefit-received? (lambda (act)
-  (has-attribute act 'benefit-gained)))
-
-(define potential-benefit? (lambda (act)
-  (has-attribute act 'benefit-possible)))
+;; Note (Defect D1): benefit-to-accused? removed — benefit to the accused is
+;; not an element of common-law fraud in South Africa (Gardener para 29).
 
 (define intention-to-deceive? (lambda (act)
   (and (knowledge-of-falsity? act)
@@ -613,6 +626,13 @@
 
 (define intention-to-mislead? (lambda (act)
   (has-attribute act 'intent-to-deceive)))
+
+(define intention-to-defraud? (lambda (act)
+  (and (intention-to-deceive? act)
+       (intention-to-induce-prejudicial-action? act))))
+
+(define intention-to-induce-prejudicial-action? (lambda (act)
+  (has-attribute act 'intent-to-induce-prejudice)))
 
 ;; Housebreaking
 (define breaking? (lambda (act)
@@ -844,7 +864,7 @@
      (get-attribute act 'harm-prevented-value))))
 
 (define no-reasonable-alternative? (lambda (act)
-  (not (has-attribute act 'reasonable-alternative-action)))
+  (not (has-attribute act 'reasonable-alternative-action))))
 
 ;; Impossibility
 (define factual-impossibility? (lambda (act)
@@ -869,7 +889,7 @@
   (has-attribute act 'mistaken-belief-crime)))
 
 (define conduct-not-actually-criminal? (lambda (act)
-  (not (has-attribute act 'actual-crime)))
+  (not (has-attribute act 'actual-crime))))
 
 ;; Consent
 (define voluntary-consent? (lambda (act)
@@ -996,7 +1016,7 @@
 
 (define threat-serious? (lambda (act)
   (or (has-attribute act 'death-threat)
-      (has-attribute act 'serious-harm-threat)))
+      (has-attribute act 'serious-harm-threat))))
 
 ;; Valid Consent
 (define valid-consent? (lambda (act)
@@ -1220,7 +1240,7 @@
   (has-attribute evidence 'strong-evidence)))
 
 (define excludes-reasonable-hypothesis? (lambda (evidence)
-  (not (has-attribute evidence 'reasonable-alternative)))
+  (not (has-attribute evidence 'reasonable-alternative))))
 
 ;; =============================================================================
 ;; SENTENCING - DETAILED IMPLEMENTATIONS
@@ -1253,7 +1273,7 @@
   (let ((crime-severity (get-attribute crime 'severity))
         (sentence-severity (get-attribute sentence 'severity)))
     (and (>= sentence-severity (* 0.8 crime-severity))
-         (<= sentence-severity (* 1.2 crime-severity)))))
+         (<= sentence-severity (* 1.2 crime-severity))))))
 
 (define not-excessive? (lambda (sentence)
   (not (has-attribute sentence 'disproportionately-harsh))))
