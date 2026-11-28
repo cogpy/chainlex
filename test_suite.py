@@ -351,7 +351,9 @@ FRAUD_THEFT_TRUTH_TABLE = r"""
 (show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive)))
 (show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive 'bona-fide-claim-of-right)))
 (show (self-defence? (row 'private-defence)))
+(show (self-defence? (row)))
 (show (legal-authority? (row 'statutory-authority)))
+(show (legal-authority? (row)))
 """
 
 
@@ -369,8 +371,9 @@ class TestCriminalRuleSemantics(unittest.TestCase):
         # fraud: potential prejudice; actual loss + causation; actual loss without
         # causation; not unlawful; no intent to induce prejudice; concealment;
         # no false representation. theft: no claim of right; bona fide claim of
-        # right. self-defence? and legal-authority? aliases.
-        self.assertEqual(result.stdout.strip(), '11000101011')
+        # right. self-defence? and legal-authority? aliases, with and without
+        # the delegated defence.
+        self.assertEqual(result.stdout.strip(), '1100010101010')
 
 
 def run_tests():
