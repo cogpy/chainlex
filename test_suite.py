@@ -323,27 +323,35 @@ FRAUD_THEFT_TRUTH_TABLE = r"""
 (define (get-attribute act attr . d)
   (let ((p (assq attr act))) (if p (cdr p) (if (null? d) #f (car d)))))
 (primitive-load "cri/za/south_african_criminal_law.scm")
+;; Stub only elements this repair did not change; the D1 helpers
+;; (misrepresentation?, potential-prejudice?, intention-to-defraud?,
+;; claim-of-right?) read the case-fact attributes directly.
 (define (flag name) (lambda (act) (has-attribute act name)))
 (set! unlawful-act? (flag 'unlawful))
-(set! misrepresentation? (flag 'misrep))
-(set! actual-loss-suffered? (flag 'loss))
-(set! potential-prejudice? (flag 'potential))
 (set! causation? (flag 'causation))
-(set! intention-to-defraud? (flag 'intent))
 (set! appropriation? (flag 'appropriation))
 (set! movable-property? (flag 'movable))
 (set! belonging-to-another? (flag 'another))
 (set! intention-to-permanently-deprive? (flag 'deprive))
-(set! no-claim-of-right? (flag 'no-claim))
+(set! private-defence? (flag 'private-defence))
+(set! statutory-authority? (flag 'statutory-authority))
 (define (row . attrs) (map (lambda (a) (cons a #t)) attrs))
+(define fraud-facts
+  '(unlawful false-representation factual-assertion knew-false
+    intent-to-deceive intent-to-induce-prejudice))
+(define (without x lst) (filter (lambda (a) (not (eq? a x))) lst))
 (define (show x) (display (if x "1" "0")))
-(show (fraud? (row 'unlawful 'misrep 'potential 'intent)))
-(show (fraud? (row 'unlawful 'misrep 'loss 'causation 'intent)))
-(show (fraud? (row 'unlawful 'misrep 'loss 'intent)))
-(show (fraud? (row 'misrep 'potential 'intent)))
-(show (fraud? (row 'unlawful 'misrep 'potential)))
-(show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive 'no-claim)))
+(show (fraud? (apply row 'risk-of-loss fraud-facts)))
+(show (fraud? (apply row 'financial-loss 'causation fraud-facts)))
+(show (fraud? (apply row 'financial-loss fraud-facts)))
+(show (fraud? (apply row 'risk-of-loss (without 'unlawful fraud-facts))))
+(show (fraud? (apply row 'risk-of-loss (without 'intent-to-induce-prejudice fraud-facts))))
+(show (fraud? (apply row 'risk-of-loss 'suppressed-truth (without 'factual-assertion fraud-facts))))
+(show (fraud? (apply row 'risk-of-loss (without 'false-representation fraud-facts))))
 (show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive)))
+(show (theft? (row 'unlawful 'appropriation 'movable 'another 'deprive 'bona-fide-claim-of-right)))
+(show (self-defence? (row 'private-defence)))
+(show (legal-authority? (row 'statutory-authority)))
 """
 
 
@@ -354,12 +362,15 @@ class TestCriminalRuleSemantics(unittest.TestCase):
     def test_fraud_and_theft_truth_table(self):
         result = subprocess.run(
             ['guile', '--no-auto-compile', '-c', FRAUD_THEFT_TRUTH_TABLE],
-            cwd=Path(__file__).parent, capture_output=True, text=True, timeout=60,
+            cwd=str(Path(__file__).parent), stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, universal_newlines=True, timeout=60,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         # fraud: potential prejudice; actual loss + causation; actual loss without
-        # causation; not unlawful; no intent. theft: no claim of right; claim of right.
-        self.assertEqual(result.stdout.strip(), '1100010')
+        # causation; not unlawful; no intent to induce prejudice; concealment;
+        # no false representation. theft: no claim of right; bona fide claim of
+        # right. self-defence? and legal-authority? aliases.
+        self.assertEqual(result.stdout.strip(), '11000101011')
 
 
 def run_tests():
@@ -390,9 +401,10 @@ def run_tests():
     print("Test Summary")
     print("="*70)
     print(f"Tests run: {result.testsRun}")
-    print(f"Successes: {result.testsRun - len(result.failures) - len(result.errors)}")
+    print(f"Successes: {result.testsRun - len(result.failures) - len(result.errors) - len(result.skipped)}")
     print(f"Failures: {len(result.failures)}")
     print(f"Errors: {len(result.errors)}")
+    print(f"Skipped: {len(result.skipped)}")
     
     if result.wasSuccessful():
         print("\n✅ All tests passed!")
